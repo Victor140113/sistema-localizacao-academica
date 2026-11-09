@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html">
+
+<h:head>
+    <title>Painel do Aluno - SLA</title>
+    <h:outputStylesheet library="css" name="style.css"/>
+</h:head>
+
+<h:body>
+    <div class="dashboard-container">
+
+        <header class="dashboard-header">
+            <div>
+                <h1>SLA</h1>
+                <span>Área do aluno</span>
+            </div>
+        </header>
+
+        <main class="dashboard-content">
+
+            <section class="welcome-section">
+                <h2>Olá, Lucas!</h2>
+                <p>Consulte suas aulas e localize suas salas.</p>
+            </section>
+
+            <section class="schedule-section">
+                <h2>Horários de aula</h2>
+
+                <h:form>
+                    <div class="day-selector">
+                        <label for="dia">Dia da semana</label>
+
+                        <select id="dia" name="dia">
+                            <option value="SEGUNDA">Segunda-feira</option>
+                            <option value="TERCA">Terça-feira</option>
+                            <option value="QUARTA">Quarta-feira</option>
+                            <option value="QUINTA">Quinta-feira</option>
+                            <option value="SEXTA">Sexta-feira</option>
+                        </select>
+                    </div>
+                </h:form>
+
+                <div class="class-card">
+                    <div class="class-card-header">
+                        <h3>Engenharia de Software</h3>
+                        <span class="room-type">Teórica</span>
+                    </div>
+
+                    <div class="class-info">
+                        <span>19:00 – 20:40</span>
+                        <span>Bloco A · Sala 101</span>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+
+        <footer class="dashboard-footer">
+            Sistema de Localização Acadêmica
+        </footer>
+
+    </div>
+</h:body>
+
+</html>
