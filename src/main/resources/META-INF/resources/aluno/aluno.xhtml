@@ -1,7 +1,13 @@
-
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="jakarta.faces.html">
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+
+<f:metadata>
+    <f:viewAction action="#{alunoController.carregar}"
+                  onPostback="false"/>
+</f:metadata>
 
 <h:head>
     <title>Painel do Aluno - SLA</title>
@@ -21,38 +27,93 @@
         <main class="dashboard-content">
 
             <section class="welcome-section">
-                <h2>Olá, Lucas!</h2>
+                <h2>Olá, #{alunoController.nomeAluno}!</h2>
                 <p>Consulte suas aulas e localize suas salas.</p>
             </section>
 
             <section class="schedule-section">
+
                 <h2>Horários de aula</h2>
 
                 <h:form>
-                    <div class="day-selector">
-                        <label for="dia">Dia da semana</label>
 
-                        <select id="dia" name="dia">
-                            <option value="SEGUNDA">Segunda-feira</option>
-                            <option value="TERCA">Terça-feira</option>
-                            <option value="QUARTA">Quarta-feira</option>
-                            <option value="QUINTA">Quinta-feira</option>
-                            <option value="SEXTA">Sexta-feira</option>
-                        </select>
+                    <div class="day-selector">
+
+                        <h:outputLabel for="dia"
+                                       value="Dia da semana"/>
+
+                        <h:selectOneMenu id="dia"
+                                         value="#{alunoController.diaSemana}">
+
+                            <f:selectItem itemValue="SEGUNDA"
+                                          itemLabel="Segunda-feira"/>
+
+                            <f:selectItem itemValue="TERCA"
+                                          itemLabel="Terça-feira"/>
+
+                            <f:selectItem itemValue="QUARTA"
+                                          itemLabel="Quarta-feira"/>
+
+                            <f:selectItem itemValue="QUINTA"
+                                          itemLabel="Quinta-feira"/>
+
+                            <f:selectItem itemValue="SEXTA"
+                                          itemLabel="Sexta-feira"/>
+
+                            <f:selectItem itemValue="SABADO"
+                                          itemLabel="Sábado"/>
+
+                            <f:selectItem itemValue="DOMINGO"
+                                          itemLabel="Domingo"/>
+
+                        </h:selectOneMenu>
+
                     </div>
+
+                    <h:commandButton value="Consultar aulas"
+                                     action="#{alunoController.consultarAulas}"
+                                     styleClass="login-button"/>
+
                 </h:form>
 
-                <div class="class-card">
-                    <div class="class-card-header">
-                        <h3>Engenharia de Software</h3>
-                        <span class="room-type">Teórica</span>
+                <br/>
+
+                <h:panelGroup layout="block"
+                              rendered="#{empty alunoController.aulas}">
+
+                    <p>Nenhuma aula encontrada para este dia.</p>
+
+                </h:panelGroup>
+
+                <ui:repeat value="#{alunoController.aulas}" var="aula">
+
+                    <div class="class-card">
+
+                        <div class="class-card-header">
+
+                            <h3>#{aula.disciplina}</h3>
+
+                            <span class="room-type">
+                                #{aula.tipoSala eq 'TEORICA' ? 'Teórica' : 'Prática'}
+                            </span>
+
+                        </div>
+
+                        <div class="class-info">
+
+                            <span>
+                                #{aula.horarioInicio} – #{aula.horarioFim}
+                            </span>
+
+                            <span>
+                                Bloco #{aula.bloco} · Sala #{aula.numeroSala}
+                            </span>
+
+                        </div>
+
                     </div>
 
-                    <div class="class-info">
-                        <span>19:00 – 20:40</span>
-                        <span>Bloco A · Sala 101</span>
-                    </div>
-                </div>
+                </ui:repeat>
 
             </section>
 
@@ -64,5 +125,4 @@
 
     </div>
 </h:body>
-
 </html>

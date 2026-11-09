@@ -1,7 +1,13 @@
-
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="jakarta.faces.html">
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+
+<f:metadata>
+    <f:viewAction action="#{professorController.carregar}"
+                  onPostback="false"/>
+</f:metadata>
 
 <h:head>
     <title>Painel do Professor - SLA</title>
@@ -21,42 +27,54 @@
         <main class="dashboard-content">
 
             <section class="welcome-section">
-                <h2>Olá, Professor!</h2>
+                <h2>Olá, #{professorController.nomeProfessor}!</h2>
                 <p>Consulte suas aulas e confira os locais onde serão realizadas.</p>
             </section>
 
             <section class="schedule-section">
+
                 <h2>Minhas aulas</h2>
 
-                <!-- Segunda-feira -->
-                <h3>Segunda-feira</h3>
+                <h:panelGroup layout="block"
+                              rendered="#{empty professorController.aulas}">
 
-                <div class="class-card">
-                    <div class="class-card-header">
-                        <h3>Engenharia de Software</h3>
-                        <span class="room-type">Teórica</span>
+                    <p>Você não possui aulas cadastradas.</p>
+
+                </h:panelGroup>
+
+                <ui:repeat value="#{professorController.aulas}" var="aula">
+
+                    <div class="class-card">
+
+                        <div class="class-card-header">
+
+                            <h3>#{aula.disciplina}</h3>
+
+                            <span class="room-type">
+                                #{aula.tipoSala eq 'TEORICA' ? 'Teórica' : 'Prática'}
+                            </span>
+
+                        </div>
+
+                        <div class="class-info">
+
+                            <span>
+                                #{professorController.nomeDia(aula.diaSemana)}
+                            </span>
+
+                            <span>
+                                #{aula.horarioInicio} – #{aula.horarioFim}
+                            </span>
+
+                            <span>
+                                Bloco #{aula.bloco} · Sala #{aula.numeroSala}
+                            </span>
+
+                        </div>
+
                     </div>
 
-                    <div class="class-info">
-                        <span>19:00 – 20:40</span>
-                        <span>Bloco A · Sala 101</span>
-                    </div>
-                </div>
-
-                <!-- Quarta-feira -->
-                <h3>Quarta-feira</h3>
-
-                <div class="class-card">
-                    <div class="class-card-header">
-                        <h3>Programação Web</h3>
-                        <span class="room-type">Prática</span>
-                    </div>
-
-                    <div class="class-info">
-                        <span>20:50 – 22:30</span>
-                        <span>Bloco B · Sala 205</span>
-                    </div>
-                </div>
+                </ui:repeat>
 
             </section>
 
@@ -68,5 +86,4 @@
 
     </div>
 </h:body>
-
 </html>

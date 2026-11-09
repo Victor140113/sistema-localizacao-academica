@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html">
@@ -16,25 +17,35 @@
         </div>
 
         <h:form>
+
+            <h:messages
+                    globalOnly="true"
+                    style="color: #dc2626; margin-bottom: 15px;"/>
+
             <div class="field">
-                <label for="email">E-mail</label>
+                <h:outputLabel for="email" value="E-mail"/>
+
                 <h:inputText id="email"
+                             value="#{loginController.email}"
                              required="true"
                              requiredMessage="Informe seu e-mail."
                              placeholder="seu.email@instituicao.edu.br"/>
             </div>
 
             <div class="field">
-                <label for="senha">Senha</label>
+                <h:outputLabel for="senha" value="Senha"/>
+
                 <h:inputSecret id="senha"
+                               value="#{loginController.senha}"
                                required="true"
                                requiredMessage="Informe sua senha."
                                placeholder="Digite sua senha"/>
             </div>
 
             <h:commandButton value="Entrar"
-                             type="button"
+                             action="#{loginController.entrar}"
                              styleClass="login-button"/>
+
         </h:form>
 
         <div class="footer">
@@ -43,5 +54,4 @@
 
     </div>
 </h:body>
-
 </html>
