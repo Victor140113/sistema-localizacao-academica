@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html">
+
+<h:head>
+    <title>Login - SLA</title>
+    <h:outputStylesheet library="css" name="style.css"/>
+</h:head>
+
+<h:body>
+    <div class="login-container">
+
+        <div class="header">
+            <h1>SLA</h1>
+            <p>Sistema de Localização Acadêmica</p>
+        </div>
+
+        <h:form>
+            <div class="field">
+                <label for="email">E-mail</label>
+                <h:inputText id="email"
+                             required="true"
+                             requiredMessage="Informe seu e-mail."
+                             placeholder="seu.email@instituicao.edu.br"/>
+            </div>
+
+            <div class="field">
+                <label for="senha">Senha</label>
+                <h:inputSecret id="senha"
+                               required="true"
+                               requiredMessage="Informe sua senha."
+                               placeholder="Digite sua senha"/>
+            </div>
+
+            <h:commandButton value="Entrar"
+                             type="button"
+                             styleClass="login-button"/>
+        </h:form>
+
+        <div class="footer">
+            Sistema de Localização Acadêmica
+        </div>
+
+    </div>
+</h:body>
+
+</html>
