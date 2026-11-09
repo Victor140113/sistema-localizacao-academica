@@ -2,16 +2,12 @@ package com.api.sla.dao;
 
 import com.api.sla.dto.AulaDTO;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Getter
-@Setter
 @AllArgsConstructor
 @Repository
 public class AulaDAO {
@@ -43,28 +39,22 @@ public class AulaDAO {
                     s.bloco,
                     s.numero AS numero_sala,
                     s.tipo AS tipo_sala
-                
                 FROM aluno_disciplina ad
-                
                 INNER JOIN disciplina d
                     ON d.id = ad.disciplina_id
-                
                 INNER JOIN aula a
                     ON a.disciplina_id = d.id
-                
                 INNER JOIN sala s
                     ON s.id = a.sala_id
-                
                 WHERE ad.aluno_id = ?
-                AND a.dia_semana = ?
-                
+                  AND a.dia_semana = ?
                 ORDER BY a.horario_inicio
                 """;
 
         return jdbcTemplate.query(sql, aulaMapper, alunoId, diaSemana);
     }
 
-    public List<AulaDTO> buscarAlocacoesDoProfessor(Integer professorId) {
+    public List<AulaDTO> buscarAulasDoProfessor(Integer professorId) {
 
         String sql = """
                 SELECT
@@ -75,17 +65,12 @@ public class AulaDAO {
                     s.bloco,
                     s.numero AS numero_sala,
                     s.tipo AS tipo_sala
-                
                 FROM aula a
-                
                 INNER JOIN disciplina d
                     ON d.id = a.disciplina_id
-                
                 INNER JOIN sala s
                     ON s.id = a.sala_id
-                
                 WHERE a.professor_id = ?
-                
                 ORDER BY
                     CASE a.dia_semana
                         WHEN 'SEGUNDA' THEN 1
