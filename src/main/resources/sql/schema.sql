@@ -27,7 +27,7 @@ create table aluno_disciplina (
     constraint fk_ad_disciplina foreign key (disciplina_id) references disciplina (id) on delete cascade
 );
 
-create table alocacao (
+create table aula (
     id int primary key auto_increment,
     disciplina_id int not null,
     professor_id int not null,
@@ -44,7 +44,7 @@ create table alocacao (
     horario_inicio time not null,
     horario_fim time not null,
     check (horario_fim > horario_inicio),
-    constraint fk_alocacao_disciplina foreign key (disciplina_id) references disciplina (id),
-    constraint fk_alocacao_professor foreign key (professor_id) references usuario (id),
-    constraint fk_alocacao_sala foreign key (sala_id) references sala (id)
+    constraint fk_aula_disciplina foreign key (disciplina_id) references disciplina (id),
+    constraint fk_aula_professor foreign key (professor_id) references usuario (id),
+    constraint fk_aula_sala foreign key (sala_id) references sala (id)
 );
