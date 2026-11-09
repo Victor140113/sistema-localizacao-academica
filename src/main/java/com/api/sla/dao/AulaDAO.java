@@ -23,12 +23,8 @@ public class AulaDAO {
 
         aula.setDisciplina(rs.getString("disciplina"));
         aula.setDiaSemana(rs.getString("dia_semana"));
-        aula.setHorarioInicio(
-                rs.getTime("horario_inicio").toLocalTime()
-        );
-        aula.setHorarioFim(
-                rs.getTime("horario_fim").toLocalTime()
-        );
+        aula.setHorarioInicio(rs.getTime("horario_inicio").toLocalTime());
+        aula.setHorarioFim(rs.getTime("horario_fim").toLocalTime());
         aula.setBloco(rs.getString("bloco"));
         aula.setNumeroSala(rs.getInt("numero_sala"));
         aula.setTipoSala(rs.getString("tipo_sala"));
@@ -36,9 +32,7 @@ public class AulaDAO {
         return aula;
     };
 
-    public List<AulaDTO> buscarAulasDoAluno(
-            Integer alunoId,
-            String diaSemana) {
+    public List<AulaDTO> buscarAulasDoAluno(Integer alunoId, String diaSemana) {
 
         String sql = """
                 SELECT
@@ -55,7 +49,7 @@ public class AulaDAO {
                 INNER JOIN disciplina d
                     ON d.id = ad.disciplina_id
                 
-                INNER JOIN alocacao a
+                INNER JOIN aula a
                     ON a.disciplina_id = d.id
                 
                 INNER JOIN sala s
@@ -67,16 +61,10 @@ public class AulaDAO {
                 ORDER BY a.horario_inicio
                 """;
 
-        return jdbcTemplate.query(
-                sql,
-                aulaMapper,
-                alunoId,
-                diaSemana
-        );
+        return jdbcTemplate.query(sql, aulaMapper, alunoId, diaSemana);
     }
 
-    public List<AulaDTO> buscarAlocacoesDoProfessor(
-            Integer professorId) {
+    public List<AulaDTO> buscarAlocacoesDoProfessor(Integer professorId) {
 
         String sql = """
                 SELECT
@@ -88,7 +76,7 @@ public class AulaDAO {
                     s.numero AS numero_sala,
                     s.tipo AS tipo_sala
                 
-                FROM alocacao a
+                FROM aula a
                 
                 INNER JOIN disciplina d
                     ON d.id = a.disciplina_id
@@ -111,10 +99,6 @@ public class AulaDAO {
                     a.horario_inicio
                 """;
 
-        return jdbcTemplate.query(
-                sql,
-                aulaMapper,
-                professorId
-        );
+        return jdbcTemplate.query(sql, aulaMapper, professorId);
     }
 }
