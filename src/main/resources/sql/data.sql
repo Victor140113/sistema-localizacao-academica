@@ -70,7 +70,7 @@ VALUES ((SELECT id FROM usuario WHERE email = 'mariana@email.com'),
 -- ==========================================
 
 -- Segunda-feira: Engenharia de Software
-INSERT INTO alocacao (disciplina_id, professor_id, sala_id,
+INSERT INTO aula (disciplina_id, professor_id, sala_id,
                       dia_semana, horario_inicio, horario_fim)
 VALUES ((SELECT id FROM disciplina WHERE nome = 'Engenharia de Software'),
         (SELECT id FROM usuario WHERE email = 'carlos@email.com'),
@@ -79,7 +79,7 @@ VALUES ((SELECT id FROM disciplina WHERE nome = 'Engenharia de Software'),
 
 
 -- Terça-feira: Banco de Dados
-INSERT INTO alocacao (disciplina_id, professor_id, sala_id,
+INSERT INTO aula (disciplina_id, professor_id, sala_id,
                       dia_semana, horario_inicio, horario_fim)
 VALUES ((SELECT id FROM disciplina WHERE nome = 'Banco de Dados'),
         (SELECT id FROM usuario WHERE email = 'carlos@email.com'),
@@ -88,7 +88,7 @@ VALUES ((SELECT id FROM disciplina WHERE nome = 'Banco de Dados'),
 
 
 -- Quarta-feira: Programação Java
-INSERT INTO alocacao (disciplina_id, professor_id, sala_id,
+INSERT INTO aula (disciplina_id, professor_id, sala_id,
                       dia_semana, horario_inicio, horario_fim)
 VALUES ((SELECT id FROM disciplina WHERE nome = 'Programação Java'),
         (SELECT id FROM usuario WHERE email = 'ana@email.com'),
@@ -97,7 +97,7 @@ VALUES ((SELECT id FROM disciplina WHERE nome = 'Programação Java'),
 
 
 -- Quinta-feira: Programação Web
-INSERT INTO alocacao (disciplina_id, professor_id, sala_id,
+INSERT INTO aula (disciplina_id, professor_id, sala_id,
                       dia_semana, horario_inicio, horario_fim)
 VALUES ((SELECT id FROM disciplina WHERE nome = 'Programação Web'),
         (SELECT id FROM usuario WHERE email = 'ana@email.com'),
@@ -106,7 +106,7 @@ VALUES ((SELECT id FROM disciplina WHERE nome = 'Programação Web'),
 
 
 -- Sexta-feira: Segunda aula de Engenharia de Software
-INSERT INTO alocacao (disciplina_id, professor_id, sala_id,
+INSERT INTO aula (disciplina_id, professor_id, sala_id,
                       dia_semana, horario_inicio, horario_fim)
 VALUES ((SELECT id FROM disciplina WHERE nome = 'Engenharia de Software'),
         (SELECT id FROM usuario WHERE email = 'carlos@email.com'),

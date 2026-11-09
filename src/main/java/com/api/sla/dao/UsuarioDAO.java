@@ -38,8 +38,6 @@ public class UsuarioDAO {
                 WHERE email = ?
                 """;
 
-        return jdbcTemplate.query(sql, usuarioMapper, email)
-                .stream()
-                .findFirst();
+        return jdbcTemplate.query(sql, usuarioMapper, email).stream().findFirst();
     }
 }
