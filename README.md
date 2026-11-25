@@ -41,6 +41,7 @@ As credenciais de demonstração serão disponibilizadas abaixo para permitir a 
 |---|---|---|
 | Professor | carlos@email.com | 123456 |
 | Aluno | lucas@email.com | 123456 |
+| Admin | admin@sla.com | 123456 |
 
 ## Execução local
 
