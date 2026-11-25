@@ -4,7 +4,9 @@ create table usuario
     nome   varchar(255) not null,
     email  varchar(255) not null unique,
     senha  varchar(255) not null,
-    perfil varchar(20)  not null check (perfil in ('ALUNO', 'PROFESSOR'))
+    perfil varchar(20)  not null check (
+        perfil in ('ALUNO', 'PROFESSOR', 'ADMIN')
+        )
 );
 
 create table disciplina
