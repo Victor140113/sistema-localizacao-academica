@@ -40,6 +40,21 @@
                 <p>Gerencie professores, disciplinas, salas e alocações de aulas.</p>
             </section>
 
+            <div class="demo-notice" role="note">
+                <strong>Ambiente de demonstração — projeto acadêmico</strong>
+
+                <p>
+                    Este sistema não é uma plataforma oficial de nenhuma
+                    instituição de ensino.
+                </p>
+
+                <p>
+                    Cadastre somente informações fictícias. Não utilize
+                    dados pessoais reais de professores ou alunos.
+                </p>
+            </div>
+
+
             <nav class="admin-nav" aria-label="Navegação administrativa">
                 <a href="#professores">Professores</a>
                 <a href="#disciplinas">Disciplinas</a>
@@ -122,7 +137,8 @@
 
                     <div class="admin-panel admin-table-panel">
                         <h3>Professores cadastrados</h3>
-                        <h:panelGroup layout="block" rendered="#{empty adminController.professores}" styleClass="empty-state">
+                        <h:panelGroup layout="block" rendered="#{empty adminController.professores}"
+                                      styleClass="empty-state">
                             Nenhum professor cadastrado.
                         </h:panelGroup>
                         <div class="table-scroll">
@@ -206,7 +222,8 @@
 
                     <div class="admin-panel admin-table-panel">
                         <h3>Disciplinas cadastradas</h3>
-                        <h:panelGroup layout="block" rendered="#{empty adminController.disciplinas}" styleClass="empty-state">
+                        <h:panelGroup layout="block" rendered="#{empty adminController.disciplinas}"
+                                      styleClass="empty-state">
                             Nenhuma disciplina cadastrada.
                         </h:panelGroup>
                         <div class="table-scroll">
@@ -376,7 +393,8 @@
                                                  value="#{adminController.aulaDisciplinaId}"
                                                  required="true"
                                                  requiredMessage="Selecione uma disciplina.">
-                                    <f:selectItem itemValue="#{null}" itemLabel="Selecione uma disciplina" noSelectionOption="true"/>
+                                    <f:selectItem itemValue="#{null}" itemLabel="Selecione uma disciplina"
+                                                  noSelectionOption="true"/>
                                     <f:selectItems value="#{adminController.disciplinas}"
                                                    var="disciplina"
                                                    itemValue="#{disciplina.id}"
@@ -390,7 +408,8 @@
                                                  value="#{adminController.aulaProfessorId}"
                                                  required="true"
                                                  requiredMessage="Selecione um professor.">
-                                    <f:selectItem itemValue="#{null}" itemLabel="Selecione um professor" noSelectionOption="true"/>
+                                    <f:selectItem itemValue="#{null}" itemLabel="Selecione um professor"
+                                                  noSelectionOption="true"/>
                                     <f:selectItems value="#{adminController.professores}"
                                                    var="professor"
                                                    itemValue="#{professor.id}"
@@ -404,7 +423,8 @@
                                                  value="#{adminController.aulaSalaId}"
                                                  required="true"
                                                  requiredMessage="Selecione uma sala.">
-                                    <f:selectItem itemValue="#{null}" itemLabel="Selecione uma sala" noSelectionOption="true"/>
+                                    <f:selectItem itemValue="#{null}" itemLabel="Selecione uma sala"
+                                                  noSelectionOption="true"/>
                                     <f:selectItems value="#{adminController.salas}"
                                                    var="sala"
                                                    itemValue="#{sala.id}"
@@ -446,7 +466,8 @@
                                 </div>
                             </div>
 
-                            <p class="field-help">O sistema impede sobreposição de horários para o mesmo professor ou para a mesma sala.</p>
+                            <p class="field-help">O sistema impede sobreposição de horários para o mesmo professor ou
+                                para a mesma sala.</p>
 
                             <div class="form-actions">
                                 <h:commandButton value="Salvar alocação"

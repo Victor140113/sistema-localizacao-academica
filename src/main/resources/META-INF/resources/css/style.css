@@ -539,3 +539,35 @@ body {
         text-align: center;
     }
 }
+
+
+/* =========================================================
+   Aviso de projeto acadêmico — ambiente de demonstração
+   ========================================================= */
+
+.demo-notice {
+    margin-bottom: 24px;
+    padding: 15px 17px;
+    border: 1px solid #fcd34d;
+    border-left: 4px solid #d97706;
+    border-radius: 8px;
+    background-color: #fffbeb;
+    color: #78350f;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.demo-notice strong {
+    display: block;
+    margin-bottom: 7px;
+    color: #92400e;
+    font-size: 14px;
+}
+
+.demo-notice p {
+    margin: 5px 0 0;
+}
+
+.demo-notice p:last-child {
+    font-weight: bold;
+}
