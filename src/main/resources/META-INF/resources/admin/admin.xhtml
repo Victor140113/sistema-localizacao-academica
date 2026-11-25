@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+
+<f:metadata>
+    <f:viewAction action="#{adminController.carregar}" onPostback="true"/>
+</f:metadata>
+
+<h:head>
+    <title>Administração - SLA</title>
+    <h:outputStylesheet library="css" name="style.css"/>
+</h:head>
+
+<h:body>
+    <div class="dashboard-container admin-dashboard">
+
+        <header class="dashboard-header admin-header">
+            <div class="admin-header-inner">
+                <div>
+                    <h1>SLA</h1>
+                    <span>Painel administrativo</span>
+                </div>
+                <div class="admin-user">
+                    <span>#{adminController.nomeAdmin}</span>
+                    <h:form>
+                        <h:commandButton value="Sair"
+                                         action="#{adminController.sair}"
+                                         styleClass="logout-button"/>
+                    </h:form>
+                </div>
+            </div>
+        </header>
+
+        <main class="dashboard-content admin-content">
+
+            <section class="welcome-section">
+                <h2>Administração acadêmica</h2>
+                <p>Gerencie professores, disciplinas, salas e alocações de aulas.</p>
+            </section>
+
+            <nav class="admin-nav" aria-label="Navegação administrativa">
+                <a href="#professores">Professores</a>
+                <a href="#disciplinas">Disciplinas</a>
+                <a href="#salas">Salas</a>
+                <a href="#aulas">Aulas e alocações</a>
+            </nav>
+
+            <h:messages id="mensagens"
+                        globalOnly="false"
+                        infoClass="message-success"
+                        errorClass="message-error"
+                        warnClass="message-warning"
+                        fatalClass="message-error"
+                        styleClass="admin-messages"/>
+
+            <!-- PROFESSORES -->
+            <section id="professores" class="admin-section">
+                <div class="admin-section-heading">
+                    <div>
+                        <h2>Professores</h2>
+                        <p>Cadastre e mantenha os dados de acesso dos professores.</p>
+                    </div>
+                    <h:form>
+                        <h:commandButton value="Novo professor"
+                                         action="#{adminController.novoProfessor}"
+                                         styleClass="primary-button">
+                            <f:ajax render=":professor-form"/>
+                        </h:commandButton>
+                    </h:form>
+                </div>
+
+                <div class="admin-grid">
+                    <div class="admin-panel">
+                        <h3>#{adminController.professorId == null ? 'Cadastrar professor' : 'Editar professor'}</h3>
+                        <h:form id="professor-form">
+                            <h:inputHidden value="#{adminController.professorId}"/>
+
+                            <div class="admin-field">
+                                <h:outputLabel for="professor-nome" value="Nome"/>
+                                <h:inputText id="professor-nome"
+                                             value="#{adminController.professorNome}"
+                                             required="true"
+                                             requiredMessage="Informe o nome do professor."
+                                             maxlength="120"/>
+                            </div>
+
+                            <div class="admin-field">
+                                <h:outputLabel for="professor-email" value="E-mail"/>
+                                <h:inputText id="professor-email"
+                                             value="#{adminController.professorEmail}"
+                                             required="true"
+                                             requiredMessage="Informe o e-mail do professor."
+                                             maxlength="160"/>
+                            </div>
+
+                            <div class="admin-field">
+                                <h:outputLabel for="professor-senha"
+                                               value="#{adminController.professorId == null ? 'Senha inicial' : 'Nova senha (não altere para manter a atual)'}"/>
+                                <h:inputSecret id="professor-senha"
+                                               value="#{adminController.professorSenha}"
+                                               required="#{adminController.professorId == null}"
+                                               requiredMessage="Informe a senha inicial."
+                                               redisplay="true"/>
+                                <span class="field-help">Na edição, deixe em branco. A senha atual será mantida.</span>
+                            </div>
+
+                            <div class="form-actions">
+                                <h:commandButton value="Salvar professor"
+                                                 action="#{adminController.salvarProfessor}"
+                                                 styleClass="primary-button"/>
+                                <h:commandButton value="Limpar"
+                                                 action="#{adminController.novoProfessor}"
+                                                 immediate="true"
+                                                 styleClass="secondary-button">
+                                    <f:ajax render="@form"/>
+                                </h:commandButton>
+                            </div>
+                        </h:form>
+                    </div>
+
+                    <div class="admin-panel admin-table-panel">
+                        <h3>Professores cadastrados</h3>
+                        <h:panelGroup layout="block" rendered="#{empty adminController.professores}" styleClass="empty-state">
+                            Nenhum professor cadastrado.
+                        </h:panelGroup>
+                        <div class="table-scroll">
+                            <h:dataTable value="#{adminController.professores}" var="professor"
+                                         rendered="#{not empty adminController.professores}"
+                                         styleClass="admin-table">
+                                <h:column>
+                                    <f:facet name="header">Nome</f:facet>
+                                    <h:outputText value="#{professor.nome}"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">E-mail</f:facet>
+                                    <h:outputText value="#{professor.email}"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Ações</f:facet>
+                                    <div class="table-actions">
+                                        <h:form>
+                                            <h:commandButton value="Editar"
+                                                             action="#{adminController.editarProfessor(professor)}"
+                                                             styleClass="table-button edit-button">
+                                                <f:ajax render=":professor-form"/>
+                                            </h:commandButton>
+                                        </h:form>
+                                        <h:form>
+                                            <h:commandButton value="Excluir"
+                                                             action="#{adminController.excluirProfessor(professor.id)}"
+                                                             onclick="return confirm('Excluir este professor?');"
+                                                             styleClass="table-button delete-button"/>
+                                        </h:form>
+                                    </div>
+                                </h:column>
+                            </h:dataTable>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- DISCIPLINAS -->
+            <section id="disciplinas" class="admin-section">
+                <div class="admin-section-heading">
+                    <div>
+                        <h2>Disciplinas</h2>
+                        <p>Organize as disciplinas disponíveis para as alocações.</p>
+                    </div>
+                    <h:form>
+                        <h:commandButton value="Nova disciplina"
+                                         action="#{adminController.novaDisciplina}"
+                                         styleClass="primary-button">
+                            <f:ajax render=":disciplina-form"/>
+                        </h:commandButton>
+                    </h:form>
+                </div>
+
+                <div class="admin-grid">
+                    <div class="admin-panel">
+                        <h3>#{adminController.disciplinaId == null ? 'Cadastrar disciplina' : 'Editar disciplina'}</h3>
+                        <h:form id="disciplina-form">
+                            <h:inputHidden value="#{adminController.disciplinaId}"/>
+                            <div class="admin-field">
+                                <h:outputLabel for="disciplina-nome" value="Nome da disciplina"/>
+                                <h:inputText id="disciplina-nome"
+                                             value="#{adminController.disciplinaNome}"
+                                             required="true"
+                                             requiredMessage="Informe o nome da disciplina."
+                                             maxlength="120"/>
+                            </div>
+                            <div class="form-actions">
+                                <h:commandButton value="Salvar disciplina"
+                                                 action="#{adminController.salvarDisciplina}"
+                                                 styleClass="primary-button"/>
+                                <h:commandButton value="Limpar"
+                                                 action="#{adminController.novaDisciplina}"
+                                                 immediate="true"
+                                                 styleClass="secondary-button">
+                                    <f:ajax render="@form"/>
+                                </h:commandButton>
+                            </div>
+                        </h:form>
+                    </div>
+
+                    <div class="admin-panel admin-table-panel">
+                        <h3>Disciplinas cadastradas</h3>
+                        <h:panelGroup layout="block" rendered="#{empty adminController.disciplinas}" styleClass="empty-state">
+                            Nenhuma disciplina cadastrada.
+                        </h:panelGroup>
+                        <div class="table-scroll">
+                            <h:dataTable value="#{adminController.disciplinas}" var="disciplina"
+                                         rendered="#{not empty adminController.disciplinas}"
+                                         styleClass="admin-table">
+                                <h:column>
+                                    <f:facet name="header">Disciplina</f:facet>
+                                    <h:outputText value="#{disciplina.nome}"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Ações</f:facet>
+                                    <div class="table-actions">
+                                        <h:form>
+                                            <h:commandButton value="Editar"
+                                                             action="#{adminController.editarDisciplina(disciplina)}"
+                                                             styleClass="table-button edit-button">
+                                                <f:ajax render=":disciplina-form"/>
+                                            </h:commandButton>
+                                        </h:form>
+                                        <h:form>
+                                            <h:commandButton value="Excluir"
+                                                             action="#{adminController.excluirDisciplina(disciplina.id)}"
+                                                             onclick="return confirm('Excluir esta disciplina?');"
+                                                             styleClass="table-button delete-button"/>
+                                        </h:form>
+                                    </div>
+                                </h:column>
+                            </h:dataTable>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SALAS -->
+            <section id="salas" class="admin-section">
+                <div class="admin-section-heading">
+                    <div>
+                        <h2>Salas</h2>
+                        <p>Cadastre salas teóricas e espaços para aulas práticas.</p>
+                    </div>
+                    <h:form>
+                        <h:commandButton value="Nova sala"
+                                         action="#{adminController.novaSala}"
+                                         styleClass="primary-button">
+                            <f:ajax render=":sala-form"/>
+                        </h:commandButton>
+                    </h:form>
+                </div>
+
+                <div class="admin-grid">
+                    <div class="admin-panel">
+                        <h3>#{adminController.salaId == null ? 'Cadastrar sala' : 'Editar sala'}</h3>
+                        <h:form id="sala-form">
+                            <h:inputHidden value="#{adminController.salaId}"/>
+                            <div class="admin-field">
+                                <h:outputLabel for="sala-numero" value="Número"/>
+                                <h:inputText id="sala-numero"
+                                             value="#{adminController.salaNumero}"
+                                             required="true"
+                                             requiredMessage="Informe o número da sala."
+                                             converterMessage="O número da sala deve ser numérico.">
+                                    <f:validateLongRange minimum="1"/>
+                                </h:inputText>
+                            </div>
+                            <div class="admin-field">
+                                <h:outputLabel for="sala-bloco" value="Bloco"/>
+                                <h:inputText id="sala-bloco"
+                                             value="#{adminController.salaBloco}"
+                                             required="true"
+                                             requiredMessage="Informe o bloco."
+                                             maxlength="30"/>
+                            </div>
+                            <div class="admin-field">
+                                <h:outputLabel for="sala-tipo" value="Tipo"/>
+                                <h:selectOneMenu id="sala-tipo" value="#{adminController.salaTipo}" required="true">
+                                    <f:selectItem itemValue="TEORICA" itemLabel="Teórica"/>
+                                    <f:selectItem itemValue="PRATICA" itemLabel="Prática / Laboratório"/>
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="form-actions">
+                                <h:commandButton value="Salvar sala"
+                                                 action="#{adminController.salvarSala}"
+                                                 styleClass="primary-button"/>
+                                <h:commandButton value="Limpar"
+                                                 action="#{adminController.novaSala}"
+                                                 immediate="true"
+                                                 styleClass="secondary-button">
+                                    <f:ajax render="@form"/>
+                                </h:commandButton>
+                            </div>
+                        </h:form>
+                    </div>
+
+                    <div class="admin-panel admin-table-panel">
+                        <h3>Salas cadastradas</h3>
+                        <h:panelGroup layout="block" rendered="#{empty adminController.salas}" styleClass="empty-state">
+                            Nenhuma sala cadastrada.
+                        </h:panelGroup>
+                        <div class="table-scroll">
+                            <h:dataTable value="#{adminController.salas}" var="sala"
+                                         rendered="#{not empty adminController.salas}"
+                                         styleClass="admin-table">
+                                <h:column>
+                                    <f:facet name="header">Sala</f:facet>
+                                    <h:outputText value="#{sala.numero}"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Bloco</f:facet>
+                                    <h:outputText value="#{sala.bloco}"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Tipo</f:facet>
+                                    <span class="room-type">
+                                        #{sala.tipo eq 'TEORICA' ? 'Teórica' : 'Prática'}
+                                    </span>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Ações</f:facet>
+                                    <div class="table-actions">
+                                        <h:form>
+                                            <h:commandButton value="Editar"
+                                                             action="#{adminController.editarSala(sala)}"
+                                                             styleClass="table-button edit-button">
+                                                <f:ajax render=":sala-form"/>
+                                            </h:commandButton>
+                                        </h:form>
+                                        <h:form>
+                                            <h:commandButton value="Excluir"
+                                                             action="#{adminController.excluirSala(sala.id)}"
+                                                             onclick="return confirm('Excluir esta sala?');"
+                                                             styleClass="table-button delete-button"/>
+                                        </h:form>
+                                    </div>
+                                </h:column>
+                            </h:dataTable>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AULAS -->
+            <section id="aulas" class="admin-section">
+                <div class="admin-section-heading">
+                    <div>
+                        <h2>Aulas e alocações</h2>
+                        <p>Associe disciplina, professor, sala, dia e intervalo de horário.</p>
+                    </div>
+                    <h:form>
+                        <h:commandButton value="Nova alocação"
+                                         action="#{adminController.novaAula}"
+                                         styleClass="primary-button">
+                            <f:ajax render=":aula-form"/>
+                        </h:commandButton>
+                    </h:form>
+                </div>
+
+                <div class="admin-grid admin-grid-allocation">
+                    <div class="admin-panel">
+                        <h3>#{adminController.aulaId == null ? 'Cadastrar alocação' : 'Editar alocação'}</h3>
+                        <h:form id="aula-form">
+                            <h:inputHidden value="#{adminController.aulaId}"/>
+
+                            <div class="admin-field">
+                                <h:outputLabel for="aula-disciplina" value="Disciplina"/>
+                                <h:selectOneMenu id="aula-disciplina"
+                                                 value="#{adminController.aulaDisciplinaId}"
+                                                 required="true"
+                                                 requiredMessage="Selecione uma disciplina.">
+                                    <f:selectItem itemValue="#{null}" itemLabel="Selecione uma disciplina" noSelectionOption="true"/>
+                                    <f:selectItems value="#{adminController.disciplinas}"
+                                                   var="disciplina"
+                                                   itemValue="#{disciplina.id}"
+                                                   itemLabel="#{disciplina.nome}"/>
+                                </h:selectOneMenu>
+                            </div>
+
+                            <div class="admin-field">
+                                <h:outputLabel for="aula-professor" value="Professor"/>
+                                <h:selectOneMenu id="aula-professor"
+                                                 value="#{adminController.aulaProfessorId}"
+                                                 required="true"
+                                                 requiredMessage="Selecione um professor.">
+                                    <f:selectItem itemValue="#{null}" itemLabel="Selecione um professor" noSelectionOption="true"/>
+                                    <f:selectItems value="#{adminController.professores}"
+                                                   var="professor"
+                                                   itemValue="#{professor.id}"
+                                                   itemLabel="#{professor.nome}"/>
+                                </h:selectOneMenu>
+                            </div>
+
+                            <div class="admin-field">
+                                <h:outputLabel for="aula-sala" value="Sala"/>
+                                <h:selectOneMenu id="aula-sala"
+                                                 value="#{adminController.aulaSalaId}"
+                                                 required="true"
+                                                 requiredMessage="Selecione uma sala.">
+                                    <f:selectItem itemValue="#{null}" itemLabel="Selecione uma sala" noSelectionOption="true"/>
+                                    <f:selectItems value="#{adminController.salas}"
+                                                   var="sala"
+                                                   itemValue="#{sala.id}"
+                                                   itemLabel="Bloco #{sala.bloco} · Sala #{sala.numero} (#{sala.tipo eq 'TEORICA' ? 'Teórica' : 'Prática'})"/>
+                                </h:selectOneMenu>
+                            </div>
+
+                            <div class="admin-field">
+                                <h:outputLabel for="aula-dia" value="Dia da semana"/>
+                                <h:selectOneMenu id="aula-dia" value="#{adminController.aulaDiaSemana}" required="true">
+                                    <f:selectItem itemValue="SEGUNDA" itemLabel="Segunda-feira"/>
+                                    <f:selectItem itemValue="TERCA" itemLabel="Terça-feira"/>
+                                    <f:selectItem itemValue="QUARTA" itemLabel="Quarta-feira"/>
+                                    <f:selectItem itemValue="QUINTA" itemLabel="Quinta-feira"/>
+                                    <f:selectItem itemValue="SEXTA" itemLabel="Sexta-feira"/>
+                                    <f:selectItem itemValue="SABADO" itemLabel="Sábado"/>
+                                    <f:selectItem itemValue="DOMINGO" itemLabel="Domingo"/>
+                                </h:selectOneMenu>
+                            </div>
+
+                            <div class="admin-field-row">
+                                <div class="admin-field">
+                                    <h:outputLabel for="aula-inicio" value="Início"/>
+                                    <h:inputText id="aula-inicio"
+                                                 value="#{adminController.aulaHorarioInicio}"
+                                                 type="time"
+                                                 required="true"
+                                                 requiredMessage="Informe o horário de início."
+                                                 converterMessage="Informe um horário de início válido."/>
+                                </div>
+                                <div class="admin-field">
+                                    <h:outputLabel for="aula-fim" value="Término"/>
+                                    <h:inputText id="aula-fim"
+                                                 value="#{adminController.aulaHorarioFim}"
+                                                 type="time"
+                                                 required="true"
+                                                 requiredMessage="Informe o horário de término."
+                                                 converterMessage="Informe um horário de término válido."/>
+                                </div>
+                            </div>
+
+                            <p class="field-help">O sistema impede sobreposição de horários para o mesmo professor ou para a mesma sala.</p>
+
+                            <div class="form-actions">
+                                <h:commandButton value="Salvar alocação"
+                                                 action="#{adminController.salvarAula}"
+                                                 styleClass="primary-button"/>
+                                <h:commandButton value="Limpar"
+                                                 action="#{adminController.novaAula}"
+                                                 immediate="true"
+                                                 styleClass="secondary-button">
+                                    <f:ajax render="@form"/>
+                                </h:commandButton>
+                            </div>
+                        </h:form>
+                    </div>
+
+                    <div class="admin-panel admin-table-panel">
+                        <h3>Grade de aulas cadastradas</h3>
+                        <h:panelGroup layout="block" rendered="#{empty adminController.aulas}" styleClass="empty-state">
+                            Nenhuma alocação cadastrada.
+                        </h:panelGroup>
+                        <div class="table-scroll">
+                            <h:dataTable value="#{adminController.aulas}" var="aula"
+                                         rendered="#{not empty adminController.aulas}"
+                                         styleClass="admin-table">
+                                <h:column>
+                                    <f:facet name="header">Disciplina</f:facet>
+                                    <h:outputText value="#{aula.disciplinaNome}"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Professor</f:facet>
+                                    <h:outputText value="#{aula.professorNome}"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Local</f:facet>
+                                    <h:outputText value="Bloco #{aula.bloco} · Sala #{aula.numeroSala}"/>
+                                    <br/>
+                                    <span class="table-subtext">#{aula.tipoSala eq 'TEORICA' ? 'Teórica' : 'Prática'}</span>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Dia e horário</f:facet>
+                                    <h:outputText value="#{aula.diaSemana}"/>
+                                    <br/>
+                                    <h:outputText value="#{aula.horarioInicio} – #{aula.horarioFim}"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Ações</f:facet>
+                                    <div class="table-actions">
+                                        <h:form>
+                                            <h:commandButton value="Editar"
+                                                             action="#{adminController.editarAula(aula)}"
+                                                             styleClass="table-button edit-button">
+                                                <f:ajax render=":aula-form"/>
+                                            </h:commandButton>
+                                        </h:form>
+                                        <h:form>
+                                            <h:commandButton value="Excluir"
+                                                             action="#{adminController.excluirAula(aula.id)}"
+                                                             onclick="return confirm('Excluir esta alocação?');"
+                                                             styleClass="table-button delete-button"/>
+                                        </h:form>
+                                    </div>
+                                </h:column>
+                            </h:dataTable>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="dashboard-footer">
+            Sistema de Localização Acadêmica
+        </footer>
+    </div>
+</h:body>
+</html>

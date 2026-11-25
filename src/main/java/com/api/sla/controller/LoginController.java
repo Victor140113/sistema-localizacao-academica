@@ -5,7 +5,6 @@ import com.api.sla.service.UsuarioService;
 import com.api.sla.session.SessaoUsuario;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Controller;
@@ -28,20 +27,32 @@ public class LoginController implements Serializable {
     private String email;
     private String senha;
 
-    public LoginController(UsuarioService usuarioService, SessaoUsuario sessaoUsuario) {
+    public LoginController(
+            UsuarioService usuarioService,
+            SessaoUsuario sessaoUsuario
+    ) {
+
         this.usuarioService = usuarioService;
         this.sessaoUsuario = sessaoUsuario;
     }
 
     public String entrar() {
 
-        Optional<Usuario> usuarioOptional = usuarioService.autenticar(email, senha);
+        Optional<Usuario> usuarioOptional =
+                usuarioService.autenticar(email, senha);
 
         if (usuarioOptional.isEmpty()) {
 
             sessaoUsuario.encerrarSessao();
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "E-mail ou senha inválidos.", null));
+            FacesContext.getCurrentInstance().addMessage(
+                    null,
+                    new FacesMessage(
+                            FacesMessage.SEVERITY_ERROR,
+                            "E-mail ou senha inválidos.",
+                            null
+                    )
+            );
 
             return null;
         }
@@ -56,6 +67,10 @@ public class LoginController implements Serializable {
 
         if ("PROFESSOR".equals(usuario.getPerfil())) {
             return "/professor/professor.xhtml?faces-redirect=true";
+        }
+
+        if ("ADMIN".equals(usuario.getPerfil())) {
+            return "/admin/admin.xhtml?faces-redirect=true";
         }
 
         sessaoUsuario.encerrarSessao();

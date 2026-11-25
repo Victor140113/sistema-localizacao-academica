@@ -4,6 +4,14 @@
 -- ==========================================
 
 INSERT INTO usuario (nome, email, senha, perfil)
+VALUES (
+           'Administrador',
+           'admin@sla.com',
+           '123456',
+           'ADMIN'
+       );
+
+INSERT INTO usuario (nome, email, senha, perfil)
 VALUES ('Lucas Almeida', 'lucas@email.com', '123456', 'ALUNO'),
        ('Mariana Costa', 'mariana@email.com', '123456', 'ALUNO'),
        ('Carlos Oliveira', 'carlos@email.com', '123456', 'PROFESSOR'),
